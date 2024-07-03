@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes, exerciseRoutes);
 app.use(errorHandler);
 
-const listener = app.listen(process.env.PORT, () => {
+const listener = app.listen(process.env.PORT || 3000, () => {
     console.log("Your app is listening on port " + listener.address().port);
 });
 module.exports = app;

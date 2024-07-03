@@ -9,5 +9,4 @@ const validateToken = asyncHandler(async (req, res, next) => {
     throw new Error("Unauthorized User");
   }
   const isValidToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-  //   req.user=
 });

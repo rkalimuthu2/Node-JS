@@ -16,7 +16,7 @@ function isValidDate(query) {
 }
 
 function checkValidDateOrNot(date) {
-  console.log(date, isValidDateFormat(date));
+
   if (date && !isValidDateFormat(date))
     return { Date: "Invalid Date Please Enter a valid Date" };
 

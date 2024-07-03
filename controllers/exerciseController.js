@@ -11,7 +11,7 @@ const router = express.Router();
 
 // Adding the Exercises
 const addExercise = asyncHandler(async (req, res) => {
-    
+
     const exerciseObj = {
         ...req.body,
         userId: req.params._id,
@@ -22,18 +22,18 @@ const addExercise = asyncHandler(async (req, res) => {
         try {
             const result = await prisma.user.findUnique({
                 where: { id: parseInt(req.params._id) },
-              });
-              console.log(result);
+            });
+
             if (!result) {
                 throw new Error();
             }
-            let { id, description, duration, date} = await prisma.exercise.create({
-                data:{
-                    id:parseInt(exerciseObj.userId),
-                    description:exerciseObj.description,
-                    duration:parseInt(exerciseObj.duration),
-                    date:new Date(exerciseObj.date),
-                }    
+            let { id, description, duration, date } = await prisma.exercise.create({
+                data: {
+                    id: parseInt(exerciseObj.userId),
+                    description: exerciseObj.description,
+                    duration: parseInt(exerciseObj.duration),
+                    date: new Date(exerciseObj.date),
+                }
             });
 
             res.json({
@@ -53,13 +53,13 @@ const addExercise = asyncHandler(async (req, res) => {
 
 // getting exercises with filters
 const getExercises = asyncHandler(async (req, res) => {
-    const da= await getUserDetail(req.params._id);
-  
-    const  { id, name }=da
-    
+    const da = await getUserDetail(req.params._id);
+
+    const { id, name } = da
+
     let query = { id: id };
 
-    console.log(id, name);
+
     let exercises = [];
     let count = 0;
 
@@ -77,11 +77,11 @@ const getExercises = asyncHandler(async (req, res) => {
             query.date = query.date || {};
             query.date.lte = endDate;
         }
-        try{
+        try {
             count = await prisma.exercise.count({
                 where: query
             });
-    
+
             exercises = await prisma.exercise.findMany({
                 where: query,
                 orderBy: {
@@ -90,8 +90,8 @@ const getExercises = asyncHandler(async (req, res) => {
                 take: limit ? parseInt(limit) : 10
             });
         }
-        catch(error){   
-            console.log(error);
+        catch (error) {
+           throw error
         }
     }
 
