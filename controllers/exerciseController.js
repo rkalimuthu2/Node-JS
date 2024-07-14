@@ -29,16 +29,16 @@ const addExercise = asyncHandler(async (req, res) => {
             }
             let { id, description, duration, date } = await prisma.exercise.create({
                 data: {
-                    id: parseInt(exerciseObj.userId),
                     description: exerciseObj.description,
                     duration: parseInt(exerciseObj.duration),
                     date: new Date(exerciseObj.date),
+                    userId: parseInt(exerciseObj.userId),
                 }
             });
 
             res.json({
                 _id: id,
-                username: result.username,
+                username: result.name,
                 description,
                 duration,
                 date,
@@ -57,7 +57,7 @@ const getExercises = asyncHandler(async (req, res) => {
 
     const { id, name } = da
 
-    let query = { id: id };
+    let query = { userId: id };
 
 
     let exercises = [];
@@ -99,8 +99,8 @@ const getExercises = asyncHandler(async (req, res) => {
         id,
         name,
         count,
-        logs: exercises.map(({ id, description, duration, date }) => ({
-            _id: id,
+        logs: exercises.map(({ userId, description, duration, date }) => ({
+            _id: userId,
             description,
             duration,
             date

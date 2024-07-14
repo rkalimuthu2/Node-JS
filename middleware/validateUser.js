@@ -14,7 +14,7 @@ const validateUserName = async (username) => {
 };
 
 const checkUserExistOrNot = async (username) => {
-  const [isUserExist] = await prisma.user.findFirst({
+  const isUserExist = await prisma.user.findUnique({
     where: { name: username },
   });
   return isUserExist ? { message: "Username is already Exist" } : "";

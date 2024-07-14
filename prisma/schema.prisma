@@ -8,15 +8,16 @@ generator client {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  exercises Exercise[]
 }
 
-
 model Exercise {
-  id          Int    @id @default(autoincrement())   
+  id          Int      @id @default(autoincrement())
   description String
   duration    Int
   date        DateTime
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
 }
-

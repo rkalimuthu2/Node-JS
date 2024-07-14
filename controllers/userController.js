@@ -6,27 +6,29 @@ const {
     CLIENT_ERROR_RESPONSE_CODE,
 } = STATUS_CODE;
 
-
-
 const express = require('express');
 const prisma = require('../prisma');
+const { validateUserName } = require("../middleware/validateUser");
 
 const router = express.Router();
 
 //Add the User
 const addUser = asyncHandler(async (req, res) => {
-
     const { username } = req.body;
-
-    try {
-        const result = await prisma.user.create({
-            data: {
-                name: username
-            },
-        });
-        res.status(SUCCESSFULLY_CREATED_RESPONSE_CODE).json(result);
-    } catch (error) {
-        res.status(CLIENT_ERROR_RESPONSE_CODE);
+    const isValidUser = await validateUserName(username);
+    if (!isValidUser) {
+        try {
+            const result = await prisma.user.create({
+                data: {
+                    name: username
+                },
+            });
+            res.status(SUCCESSFULLY_CREATED_RESPONSE_CODE).json(result);
+        } catch (error) {
+            res.status(CLIENT_ERROR_RESPONSE_CODE).json(error);
+        }
+    } else {
+        res.status(CLIENT_ERROR_RESPONSE_CODE).json(isValidUser);
     }
 });
 
